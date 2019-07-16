@@ -17,7 +17,6 @@ def init_api(app):
         password = request.form.get('password')
         # 最后一条记录及其ID
         lastUserRecord = Users.query.order_by(desc('id')).first()
-        # lastUserRecord = Users.query.order_by(text('id')).all()
 
         if (lastUserRecord is None):
             newRecordId = 1

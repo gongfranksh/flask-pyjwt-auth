@@ -17,7 +17,8 @@ class Auth():
         """
         try:
             payload = {
-                'exp': datetime.datetime.utcnow() + datetime.timedelta(days=0, seconds=10),
+                'exp': datetime.datetime.utcnow() + datetime.timedelta(days=config.VERIFY_EXP_DAYS),
+                # 'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1000, seconds=10),
                 'iat': datetime.datetime.utcnow(),
                 'iss': 'ken',
                 'data': {
@@ -41,9 +42,10 @@ class Auth():
         :return: integer|string
         """
         try:
-            # payload = jwt.decode(auth_token, app.config.get('SECRET_KEY'), leeway=datetime.timedelta(seconds=10))
+            # payload = jwt.decode(auth_token, config.SECRET_KEY, leeway=datetime.timedelta(seconds=10))
+            payload = jwt.decode(auth_token, config.SECRET_KEY, leeway=datetime.timedelta(days=config.VERIFY_EXP_DAYS))
             # 取消过期时间验证
-            payload = jwt.decode(auth_token, config.SECRET_KEY, options={'verify_exp': False})
+            # payload = jwt.decode(auth_token, config.SECRET_KEY, options={'verify_exp': False})
             if ('data' in payload and 'id' in payload['data']):
                 return payload
             else:
